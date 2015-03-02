@@ -1,0 +1,77 @@
+package tree;
+
+/*Same_Tree
+
+ Given two binary trees, write a function to check if they are equal or not.
+ Two binary trees are considered equal if they are structurally identical and
+ the nodes have the same value.
+ */
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class leetcode_Same_Tree {
+
+	public static void main(String[] args) {
+		TreeNode a = new TreeNode(1);
+		a.right = new TreeNode(1);
+		TreeNode b = new TreeNode(1);
+		b.right = new TreeNode(1);
+		isSame(a, b);
+	}
+
+	public static boolean isSameTree(TreeNode p, TreeNode q) {
+		if (p == null || q == null) {
+			return p == q;
+		} else if (p.val != q.val) {
+			return false;
+		} else {
+			return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+		}
+	}
+
+	public static boolean isSame(TreeNode a, TreeNode b) {
+		Queue<TreeNode> aQueue = new LinkedList<TreeNode>();
+		Queue<TreeNode> bQueue = new LinkedList<TreeNode>();
+		TreeNode A, B;
+		aQueue.add(a);
+		bQueue.add(b);
+		while (!aQueue.isEmpty() && !bQueue.isEmpty()) {
+			A = aQueue.poll();
+			B = bQueue.poll();
+			if ((A == null && B != null) || (A != null && B == null)) {
+				return false;
+			} else if (A != null && B != null) {
+				if (A.val != B.val) {
+					return false;
+				} else {
+					aQueue.add(A.left);
+					aQueue.add(A.right);
+					bQueue.add(B.left);
+					bQueue.add(B.right);
+				}
+			}
+		}
+		return true;
+	}
+
+	static class TreeNode {
+		TreeNode left;
+		TreeNode right;
+		int val;
+
+		TreeNode(int x) {
+			this.left = null;
+			this.right = null;
+			this.val = x;
+		}
+	}
+
+}
+
+/*
+ * Python Version def isSameTree(self, p, q): if not p and not q: return True
+ * elif (p and not q) or (not p and q): return False elif p.val != q.val: return
+ * False else: return self.isSameTree(p.left, q.left) and
+ * self.isSameTree(p.right, q.right)
+ */
